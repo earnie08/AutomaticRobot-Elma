@@ -19,7 +19,7 @@ class Robot_Core : public Process {
     public:
         Robot_Core(MapInfo *mpinfo) : Process("Robot Core") {
             mp_info = mpinfo;
-            bool init = mp_info.setRobotLocation(0,0);
+            bool init = mp_info->setRobotLocation(0,0);
             status = off;
             proximity = false;
             noise = false;
@@ -73,7 +73,7 @@ class Robot_Core : public Process {
                 pathToCharge();
                 if(inChargeStation()){
                     battery.consume();
-                    mp_info.cleanMap();
+                    mp_info->cleanMap();
                     emit(Event("found recharge station"));
                 }
                 else {
@@ -142,7 +142,7 @@ class Robot_Core : public Process {
         void stop(){}
 
         bool batteryRunOut(){
-            int steps = abs(mp_info.getChargeStation().first - mp_info.getRobotPosition().first) + abs(mp_info.getChargeStation().second - mp_info.getRobotPosition().second);
+            int steps = abs(mp_info->getChargeStation().first - mp_info->getRobotPosition().first) + abs(mp_info->getChargeStation().second - mp_info->getRobotPosition().second);
             
             if(steps+1 >= battery.getStatus()/battery.getConsume()){
                 std::cout << "Battery low...\n";
@@ -152,37 +152,37 @@ class Robot_Core : public Process {
         }
 
         bool inChargeStation(){
-            if(abs(mp_info.getChargeStation().first - mp_info.getRobotPosition().first) + abs(mp_info.getChargeStation().second - mp_info.getRobotPosition().second) == 0)
+            if(abs(mp_info->getChargeStation().first - mp_info->getRobotPosition().first) + abs(mp_info->getChargeStation().second - mp_info->getRobotPosition().second) == 0)
                 return true;
             else return false;
         }
 
         void pathToCharge(){
-            int x_steps = mp_info.getChargeStation().first - mp_info.getRobotPosition().first; // >0 right
+            int x_steps = mp_info->getChargeStation().first - mp_info->getRobotPosition().first; // >0 right
             if(x_steps > 0){
-                if(!mp_info.setRobotLocation(mp_info.getRobotPosition().first+1, mp_info.getRobotPosition().second))
+                if(!mp_info->setRobotLocation(mp_info->getRobotPosition().first+1, mp_info->getRobotPosition().second))
                     std::cout << "somthing went wrong...\n"; 
             }
             else if (x_steps < 0){
-                if(!mp_info.setRobotLocation(mp_info.getRobotPosition().first-1, mp_info.getRobotPosition().second))
+                if(!mp_info->setRobotLocation(mp_info->getRobotPosition().first-1, mp_info->getRobotPosition().second))
                     std::cout << "somthing went wrong...\n"; 
             }
             else{
-                int y_steps = mp_info.getChargeStation().second - mp_info.getRobotPosition().second; // >0 down
+                int y_steps = mp_info->getChargeStation().second - mp_info->getRobotPosition().second; // >0 down
                 if(y_steps > 0){
-                    if(!mp_info.setRobotLocation(mp_info.getRobotPosition().first, mp_info.getRobotPosition().second+1))
+                    if(!mp_info->setRobotLocation(mp_info->getRobotPosition().first, mp_info->getRobotPosition().second+1))
                         std::cout << "somthing went wrong...\n"; 
                 }
                 else if(y_steps < 0)
-                    if(!mp_info.setRobotLocation(mp_info.getRobotPosition().first, mp_info.getRobotPosition().second-1))
+                    if(!mp_info->setRobotLocation(mp_info->getRobotPosition().first, mp_info->getRobotPosition().second-1))
                         std::cout << "somthing went wrong...\n"; 
             }
         }
 
         void wandering(){
             bool end = false;
-            int pos_x = mp_info.getRobotPosition().first;
-            int pos_y = mp_info.getRobotPosition().second;
+            int pos_x = mp_info->getRobotPosition().first;
+            int pos_y = mp_info->getRobotPosition().second;
 
             while(!end){
                 int direction = rand() % 4 + 1;
@@ -217,28 +217,28 @@ class Robot_Core : public Process {
                 }*/
                 switch(direction){
                     case 1:
-                        end = mp_info.setRobotLocation(pos_x-1, pos_y);
+                        end = mp_info->setRobotLocation(pos_x-1, pos_y);
                         break;
                     case 2:
-                        end = mp_info.setRobotLocation(pos_x, pos_y-1);
+                        end = mp_info->setRobotLocation(pos_x, pos_y-1);
                         break;
                     case 3:
-                        end = mp_info.setRobotLocation(pos_x, pos_y+1);
+                        end = mp_info->setRobotLocation(pos_x, pos_y+1);
                         break;
                     case 4:
-                        end = mp_info.setRobotLocation(pos_x+1, pos_y);
+                        end = mp_info->setRobotLocation(pos_x+1, pos_y);
                         break;
                 }
             }
-            if(pos_x !=mp_info.getChargeStation().first || pos_y != mp_info.getChargeStation().second)
-                mp_info.cleanSymbol(pos_x,pos_y);
+            if(pos_x !=mp_info->getChargeStation().first || pos_y != mp_info->getChargeStation().second)
+                mp_info->cleanSymbol(pos_x,pos_y);
         }
 
         void detecting(){
-            int I_x = mp_info.getIntruderPosition().first;
-            int I_y = mp_info.getIntruderPosition().second;
-            int R_x = mp_info.getRobotPosition().first;
-            int R_y = mp_info.getRobotPosition().second;
+            int I_x = mp_info->getIntruderPosition().first;
+            int I_y = mp_info->getIntruderPosition().second;
+            int R_x = mp_info->getRobotPosition().first;
+            int R_y = mp_info->getRobotPosition().second;
 
             if(abs(R_x - I_x) <= 4 && abs(R_y - I_y) <=4 ){
                 std::cout << "Intruder Position: " << R_x << "," << R_y << "\n";
@@ -259,9 +259,9 @@ class Robot_Core : public Process {
         MapInfo *mp_info;
 
         void printStatus(){
-            mp_info.printMap();
-            std::cout << "Current Position: " << mp_info.getRobotPosition().first << "," << mp_info.getRobotPosition().second << "\n";
-            std::cout << "Charge Station: " << mp_info.getChargeStation().first << "," << mp_info.getChargeStation().second << "\n";
+            mp_info->printMap();
+            std::cout << "Current Position: " << mp_info->getRobotPosition().first << "," << mp_info->getRobotPosition().second << "\n";
+            std::cout << "Charge Station: " << mp_info->getChargeStation().first << "," << mp_info->getChargeStation().second << "\n";
             std::cout << "Battery: " << battery.getStatus() << "   Consume: " << battery.getConsume() << "\n";
             std::cout << "Battery Consume Rate: " << battery.getConsume() << "\n\n";
         }

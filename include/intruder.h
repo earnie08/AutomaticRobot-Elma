@@ -11,19 +11,19 @@ class Intruder : public Process{
     public:
         Intruder(MapInfo *mpinfo) : Process("Intruder") { 
             mp_info = mpinfo;
-            mp_info.setIntruderLocation(1,3);
+            mp_info->setIntruderLocation(1,3);
             mpinfo.printMap();
         }
 
         void init(){}
         void start(){}
         void update(){
-            auto mp = mp_info.getMap();
+            auto mp = mp_info->getMap();
             int x,y;
             do{
-                x = rand() % (mp_info.getMapSize()-1)/2;
-                y = rand() % (mp_info.getMapSize()-1)/2;
-            }while(!mp_info.setIntruderLocation(x,y));
+                x = rand() % (mp_info->getMapSize()-1)/2;
+                y = rand() % (mp_info->getMapSize()-1)/2;
+            }while(!mp_info->setIntruderLocation(x,y));
         }
         void stop(){}
 

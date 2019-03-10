@@ -5,6 +5,7 @@ Automatic Robot - Elma
 Project Goal :
 ---
 Build a security gard robot running in a 2D array map automatically. Implement Elma as the event control manager in robot. Elma will control the robot core system syncing the latest map and battery status from map and battery event. User can set the map size, charging station location, running time and battery consuming ratio through a json file. Moreover, user will interact with the robot by sending intruder location through http protocal.
+
 <img src="2D-Array-Map.png" alt="GitHub" title="GitHub,Social Coding" width="30%"/>
 
 Milestones:
