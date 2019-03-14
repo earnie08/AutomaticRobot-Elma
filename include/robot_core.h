@@ -19,17 +19,15 @@ typedef enum {
 namespace robot{
     class Robot_Core : public Process{
         public:
-        //!Construct
+        //! Default Construct
         //! \param mpinfo Map information from mapinfo.h
-        Robot_Core(MapInfo *mpinfo):Process("Robot Core"){
-            mp_info = mpinfo;
-            mp_info->setRobotLocation(0,0);
-            status = off;
-            proximity = false;
-            noise = false;
-            x_first = true;
-            printStatus();
-        }
+        Robot_Core(MapInfo *mpinfo);
+
+        //! Customize Construct
+        //! \param RobotName The name of this robot
+        //! \param mpinfo Map information from mapinfo.h
+        //! \param robotPosition The initial position of robot
+        Robot_Core(string RobotName, MapInfo *mpinfo, vector<int> robotPosition, int battery_size, int consume_rate);
 
         //! Random next position when robot is wandering
         void wandering();

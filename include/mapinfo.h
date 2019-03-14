@@ -8,13 +8,13 @@ using namespace std;
 class MapInfo {
     public:
     //! Default construct
-    MapInfo() {}
+    MapInfo();
 
     //! Contruct with map size
-    MapInfo(int size);
+    MapInfo(int size, vector<int> chargeStation);
 
     //! Set the charge station at the center of map as 'C'
-    void setChargeStation();
+    void setChargeStation(int x, int y);
 
     //! Set the robot location in map
     //! \param x The x-axis position of robot in map

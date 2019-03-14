@@ -2,6 +2,28 @@
 #include "robot_core.h"
 
 namespace robot{
+    Robot_Core::Robot_Core(MapInfo *mpinfo):Process("Robot Core"){
+        mp_info = mpinfo;
+        mp_info->setRobotLocation(0,0);
+        status = off;
+        proximity = false;
+        noise = false;
+        x_first = true;
+        printStatus();
+    }
+    
+    Robot_Core::Robot_Core(string RobotName, MapInfo *mpinfo, vector<int> robotPosition, int battery_size, int consume_rate):Process(RobotName){
+        mp_info = mpinfo;
+        mp_info->setRobotLocation(robotPosition[0],robotPosition[1]);
+
+        battery = Battery(battery_size, consume_rate);
+        status = off;
+        proximity = false;
+        noise = false;
+        x_first = true;
+        printStatus();
+    }
+    
     void Robot_Core::wandering(){
         bool end = false;
         int pos_x = mp_info->getRobotPosition().first;

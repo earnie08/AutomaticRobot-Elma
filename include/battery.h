@@ -12,7 +12,7 @@ namespace robot{
 
         //! Customize Battery construct. Amount will automatically set to 100 if input amount <= 0,
         //! \param amount The amount of battery.
-        Battery(int amount);
+        Battery(int amount, int consume_rate);
 
         //! Battery consume function
         void consume();

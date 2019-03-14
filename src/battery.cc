@@ -8,12 +8,13 @@ namespace robot{
         consume_value = 5;
     }
     
-    Battery::Battery(int amount){
+    Battery::Battery(int amount, int consume_rate){
         if(amount <=0 )
             amount = 100;
+   
         full_battery = amount;
         battery_status = full_battery;
-        consume_value = amount/20;
+        consume_value = consume_rate;
     }
 
     void Battery::consume(){

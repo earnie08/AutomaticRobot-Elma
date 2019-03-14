@@ -6,7 +6,14 @@
 
 using namespace std;
 
-MapInfo::MapInfo(int size){
+MapInfo::MapInfo(){
+    cout << "Creating map...\n"; 
+    map_size = 11*2+1;
+    createMap(map_size);
+    setChargeStation(5, 5);
+}
+
+MapInfo::MapInfo(int size, vector<int> chargeStation){
     if(size < 10){
         cout << "Reset the map size to minimum size 10x10.\n";
         size = 10;
@@ -14,19 +21,26 @@ MapInfo::MapInfo(int size){
     cout << "Creating map...\n"; 
     map_size = size*2+1;
     createMap(map_size);
-    setChargeStation();
+    setChargeStation(chargeStation[0], chargeStation[1]);
 }
 
-void MapInfo::setChargeStation(){
-    if((map_size-1)%2 == 0){
-        mp[map_size/2-1][map_size/2-1] = 'C';
-        pos_chargeSation = make_pair((map_size/2-1)/2, (map_size/2-1)/2);
+void MapInfo::setChargeStation(int x, int y){
+    if(x > 0 && y > 0 && x*2-1 < map_size && y*2-1 < map_size){
+        mp[x*2+1][y*2+1] = 'C';
+        pos_chargeSation = make_pair(x,y);
+        cout << "Charge Station: " << pos_chargeSation.first << "," << pos_chargeSation.second << "\n";
     }
-    else {
-        mp[map_size/2][map_size/2] = 'C';
-        pos_chargeSation = make_pair(map_size/4, map_size/4);
+    else{
+        if((map_size-1)%2 == 0){
+            mp[map_size/2-1][map_size/2-1] = 'C';
+            pos_chargeSation = make_pair((map_size/2-1)/2, (map_size/2-1)/2);
+        }
+        else {
+            mp[map_size/2][map_size/2] = 'C';
+            pos_chargeSation = make_pair(map_size/4, map_size/4);
+        }
+        cout << "Charge Station is not in the map.\nReset Charge Station: " << pos_chargeSation.first << "," << pos_chargeSation.second << "\n";
     }
-    cout << "Charge Station: " << pos_chargeSation.first << "," << pos_chargeSation.second << "\n";
 }
 
 bool MapInfo::setRobotLocation(int x, int y){
@@ -79,7 +93,7 @@ void MapInfo::createMap(int size){
 void MapInfo::cleanMap(){
     mp = vector<vector<char>>();
     createMap(map_size);
-    setChargeStation();
+    setChargeStation(pos_chargeSation.first, pos_chargeSation.second);
 }
 
 void MapInfo::printMap(){

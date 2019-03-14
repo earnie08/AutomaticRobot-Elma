@@ -99,8 +99,14 @@ namespace robot{
 
     class Robot_States : public StateMachine {
     public:
-        Robot_States() : StateMachine("Default Machine") {}
+        Robot_States() : StateMachine("Default Machine") {
+            Addtransition();
+        }
         Robot_States(string name) : StateMachine(name) {
+            Addtransition();
+        }
+
+        void Addtransition(){
             set_initial(off);
             add_transition("start robot", off, wander);
             add_transition("intruder detected", wander, makenoise);
