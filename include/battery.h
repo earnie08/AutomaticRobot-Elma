@@ -4,45 +4,31 @@
 #include <iostream>
 using namespace std;
 
+namespace robot{
+    class Battery{
+        public:
+        //! Default construct
+        Battery();
 
-class Battery{
-    public:
-    //! Default construct
-    Battery(){ 
-        
-        full_battery = 100;
-        battery_status = full_battery;
-        consume_value = 10;
-        std::cout << "Set robot batter: " << full_battery << " comsume: " << consume_value << " per times.\n\n";
-    }
-    
-    Battery(int amount){
-        full_battery = amount;
-        battery_status = full_battery;
-        consume_value = amount/10;
-    }
+        //! Customize Battery construct. Amount will automatically set to 100 if input amount <= 0,
+        //! \param amount The amount of battery.
+        Battery(int amount);
 
-    void consume(){
-        battery_status -= consume_value;
-    }
+        //! Battery consume function
+        void consume();
 
-    bool charge(){
-        battery_status += consume_value;
-        if(battery_status >= full_battery){
-            battery_status = full_battery;
-            return false;
-        }
-        else
-            return true;
-    }
+        //! Battery charging function
+        //! \return Ture: charging ; False: battery is full
+        bool charge();
 
-    void setConsume(int value) { consume_value = value; }
-    double getBattery() { return full_battery; }
-    double getStatus() { return battery_status; }
-    double getConsume() { return consume_value; }
+        inline void setConsume(int value) { consume_value = value; }
+        inline double getBattery() { return full_battery; }
+        inline double getStatus() { return battery_status; }
+        inline double getConsume() { return consume_value; }
 
-    private:
-        double full_battery, battery_status, consume_value;
-};
+        private:
+            double full_battery, battery_status, consume_value;
+    };
+}
 
 #endif

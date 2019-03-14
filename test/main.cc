@@ -8,6 +8,7 @@
 #include "mapinfo.h"
 
 using namespace std;
+using namespace robot;
 
 GTEST_API_ int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
@@ -16,13 +17,13 @@ GTEST_API_ int main(int argc, char **argv) {
 
 TEST(Robot, Basic) {
     Manager m;
-    MapInfo mp_info = MapInfo(10);
-    Intruder intruder = Intruder(&mp_info);
+    MapInfo mpinfo = MapInfo(10);
+    Intruder intruder = Intruder(&mpinfo);
     Robot_States states = Robot_States("default robot");
-    Robot_Core core = Robot_Core(&mp_info);
+    Robot_Core core = Robot_Core(&mpinfo);
 
-    m.schedule(states, 1_s)
-     .schedule(intruder, 5_s)
+    m.schedule(intruder, 5_s)
+     .schedule(states, 1_s)
      .schedule(core, 1_s)
      .init();
     m.run(60_s);
