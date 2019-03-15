@@ -1,6 +1,9 @@
-bin/
-build/
-html/
-latex/
-docs.config
 doxygen_sqlite3.db
+bin/
+examples/bin
+build/
+tmp/
+~*
+*.a
+.DS_Store
+*.o
