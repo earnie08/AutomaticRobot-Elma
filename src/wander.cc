@@ -13,12 +13,7 @@ void Wander::entry(const Event& e) {
 }
 
 void Wander::during() {
-    int R_x = robot().getMap()->getRobotPosition().first;
-    int R_y = robot().getMap()->getRobotPosition().second;
-    int I_x = robot().getMap()->getIntruderPosition().first;
-    int I_y = robot().getMap()->getIntruderPosition().second;
-    
-    if(robot().intruderDetection(R_x, R_y, I_x, I_y)){
+    if(robot().intruderDetection()){
         emit(Event("intruder detected"));
     }
     else{
@@ -26,7 +21,7 @@ void Wander::during() {
             emit(Event("battery low"));
         }
         else{
-            robot().wandering(R_x, R_y, 1);
+            robot().wandering(1);
         }
     }
 }

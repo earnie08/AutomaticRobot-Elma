@@ -8,21 +8,14 @@ Robot&Evade:: robot() { return (Robot&) state_machine(); }
 
 void Evade::entry(const Event& e) {
     robot().setStatus(evading);
-    cout << "Evading Enter\n";
 }
 
 void Evade::during(){
-    int R_x = robot().getMap()->getRobotPosition().first;
-    int R_y = robot().getMap()->getRobotPosition().second;
-    int I_x = robot().getMap()->getIntruderPosition().first;
-    int I_y = robot().getMap()->getIntruderPosition().second;
-
-    if(robot().proximityDetection(R_x, R_y, I_x, I_y)){
-        if(robot().batteryDetection()){
+    if(robot().proximityDetection()){
+        if(robot().batteryDetection())
             emit(Event("battery low"));
-        }
         else{
-            robot().wandering(R_x, R_y, 2);
+            robot().wandering(2);
             robot().getBattery()->consume();
         }
     }

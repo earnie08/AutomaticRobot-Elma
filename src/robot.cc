@@ -27,27 +27,41 @@ Robot::Robot(MapInfo *mpinfo): StateMachine("Robot") {
 bool Robot::batteryDetection(){
     int steps = abs(_map->getChargeStation().first - _map->getRobotPosition().first) + abs(_map->getChargeStation().second - _map->getRobotPosition().second);
     
-    if((steps+2)*_battery.getConsume() >= _battery.getStatus() - _battery.getConsume()) return true;
-    else return false;
-}
-
-bool Robot::intruderDetection(int R_x, int R_y, int I_x, int I_y){
-    if(abs(R_x - I_x) <= 4 && abs(R_y - I_y) <=4){
+    if((steps+2)*_battery.getConsume() >= _battery.getStatus() - _battery.getConsume())
         return true;
-    } else {
+    else 
         return false;
-    }
 }
 
-bool Robot::proximityDetection(int R_x, int R_y, int I_x, int I_y){
+bool Robot::intruderDetection(){
+    int R_x = _map->getRobotPosition().first;
+    int R_y = _map->getRobotPosition().second;
+    int I_x = _map->getIntruderPosition().first;
+    int I_y = _map->getIntruderPosition().second;
+
+    if(abs(R_x - I_x) <= 4 && abs(R_y - I_y) <=4)
+        return true;
+    else
+        return false;
+}
+
+bool Robot::proximityDetection(){
+    int R_x = _map->getRobotPosition().first;
+    int R_y = _map->getRobotPosition().second;
+    int I_x = _map->getIntruderPosition().first;
+    int I_y = _map->getIntruderPosition().second;
+
     if(abs(R_x - I_x) <= 2 && abs(R_y - I_y) <=2)
         return true;
     else
         return false;
 }
 
-void Robot::wandering(int x, int y, int steps){
+void Robot::wandering(int steps){
+    int x = _map->getRobotPosition().first;
+    int y = _map->getRobotPosition().second;
     bool end = false;
+
     while(!end){
         int direction = rand() % 4 + 1;
         switch(direction){
@@ -73,12 +87,15 @@ vector<string> Robot::getStatus(){
     vector<string> v;
     string s = "";
 
-    if(_status == charge_battery) s = "Robot Position: [" + to_string(_map->getChargeStation().first) + "," + to_string(_map->getChargeStation().second) + "]";
-    else s = "Robot Position: [" + to_string(_map->getRobotPosition().first) + "," + to_string(_map->getRobotPosition().second) + "]";
+    if(_status == charge_battery)
+        s = "Robot Position: [" + to_string(_map->getChargeStation().first) + "," + to_string(_map->getChargeStation().second) + "]";
+    else
+        s = "Robot Position: [" + to_string(_map->getRobotPosition().first) + "," + to_string(_map->getRobotPosition().second) + "]";
     v.push_back(s);
 
     s = "Battery: " + to_string(_battery.getStatus());
     v.push_back(s);
+
     s = "Battery Consume Rate: " + to_string(_battery.getConsume());
     v.push_back(s);
 
@@ -111,7 +128,6 @@ vector<string> Robot::getStatus(){
             s = "Robot Status: Charging";
             v.push_back(s);
             break;
-
     }
     return v;
 }

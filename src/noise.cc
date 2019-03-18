@@ -11,13 +11,8 @@ void Noise::entry(const Event& e) {
     robot().getBattery()->consume();
 }
 void Noise::during() {
-    int R_x = robot().getMap()->getRobotPosition().first;
-    int R_y = robot().getMap()->getRobotPosition().second;
-    int I_x = robot().getMap()->getIntruderPosition().first;
-    int I_y = robot().getMap()->getIntruderPosition().second;
-    
-    if(robot().intruderDetection(R_x, R_y, I_x, I_y)){
-        if(robot().proximityDetection(R_x, R_y, I_x, I_y))
+    if(robot().intruderDetection()){
+        if(robot().proximityDetection())
             emit(Event("proximity warning"));
         else{
             robot().getBattery()->consume();
@@ -25,14 +20,12 @@ void Noise::during() {
                 emit(Event("battery low"));
         }
     }
-    else{
+    else
         emit(Event("reset"));
-    }
 } 
 
 void Noise::exit(const Event& e) {
-    if(e.name() != "proximity warning"){
+    if(e.name() != "proximity warning")
         robot().getBattery()->setConsume(robot().getBattery()->getConsumeRate());
-    }
     else robot().getBattery()->consume();
 }
