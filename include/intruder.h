@@ -10,7 +10,7 @@ using namespace elma;
 class Intruder : public Process{
     public:
         //! Constructor with map information
-        Intruder(MapInfo& mpinfo) : Process("Intruder"), mp_info(mpinfo) {}
+        Intruder(MapInfo& mpinfo) : Process("Intruder"), _mp_info(mpinfo) {}
 
         //! Setting to watch event called "intruder". 
         void init();
@@ -26,7 +26,7 @@ class Intruder : public Process{
         void stop(){}
 
     private:
-        bool running = false;
-        MapInfo& mp_info;
+        bool _running = false;
+        MapInfo& _mp_info;
 };
 #endif

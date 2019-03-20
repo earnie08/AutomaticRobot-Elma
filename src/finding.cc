@@ -48,11 +48,11 @@ bool Finding::inChargeStation(){
     int y_steps = mp_info->getChargeStation().second - r_y_pos;
     
     if((x_steps == 0 && abs(y_steps) == 1) || (abs(x_steps) == 1 && y_steps == 0)){
-        x_first = true;
+        _x_first = true;
         return true;
     }
 
-    if(x_first){
+    if(_x_first){
         if(x_steps != 0){
             if(r_x_pos + x_steps/abs(x_steps) == i_x_pos && r_y_pos == i_y_pos){
                     if(y_steps != 0)
@@ -61,7 +61,7 @@ bool Finding::inChargeStation(){
                         if(r_y_pos + 1 >= (mp_info->getMapSize()-1)/2 || mp_info->getMap()[r_x_pos][r_y_pos + 1] != ' ')
                             mp_info->setRobotLocation(r_x_pos, r_y_pos - 1);
                         else mp_info->setRobotLocation(r_x_pos, r_y_pos + 1);
-                        x_first = true;
+                        _x_first = true;
                     }
             }
             else mp_info->setRobotLocation(r_x_pos + x_steps/abs(x_steps), r_y_pos);
@@ -74,7 +74,7 @@ bool Finding::inChargeStation(){
                         if(r_x_pos + 1 >= (mp_info->getMapSize()-1)/2 || mp_info->getMap()[r_x_pos + 1][r_y_pos] != ' ')
                             mp_info->setRobotLocation(r_x_pos - 1, r_y_pos);
                         else mp_info->setRobotLocation(r_x_pos + 1, r_y_pos);
-                        x_first = false;
+                        _x_first = false;
                     }
             }
             else mp_info->setRobotLocation(r_x_pos, r_y_pos + y_steps/abs(y_steps));
@@ -89,7 +89,7 @@ bool Finding::inChargeStation(){
                         if(r_x_pos + 1 >= (mp_info->getMapSize()-1)/2 || mp_info->getMap()[r_x_pos + 1][r_y_pos] != ' ')
                             mp_info->setRobotLocation(r_x_pos - 1, r_y_pos);
                         else mp_info->setRobotLocation(r_x_pos + 1, r_y_pos);
-                        x_first = false;
+                        _x_first = false;
                     }
             }
             else mp_info->setRobotLocation(r_x_pos, r_y_pos + y_steps/abs(y_steps));
@@ -102,7 +102,7 @@ bool Finding::inChargeStation(){
                         if(r_y_pos + 1 >= (mp_info->getMapSize()-1)/2 || mp_info->getMap()[r_x_pos][r_y_pos + 1] != ' ')
                             mp_info->setRobotLocation(r_x_pos, r_y_pos - 1);
                         else mp_info->setRobotLocation(r_x_pos, r_y_pos + 1);
-                        x_first = true;
+                        _x_first = true;
                     }
             }
             else mp_info->setRobotLocation(r_x_pos + x_steps/abs(x_steps), r_y_pos);

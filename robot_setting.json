@@ -1,9 +1,10 @@
 {
-    "Robot Name": "Earnie's Robot",
-    "Mode" : "Terminal",
-    "MapSize": 10,
-    "BatterySize": 100,
-    "BatteryConsumeRate": 10,
-    "ChargeStation": [2,2],
-    "RobotPosition": [5,5]
+    "Robot Name": "Security Robot",
+    "Map Size": 20,
+    "Battery Size": 100,
+    "Battery Consume Rate": 2,
+    "Charge Station": [2,2],
+    "Robot Position": [5,5],
+    "Robot Detection Area": 20,
+    "Robot Proximity Area": 20
 }

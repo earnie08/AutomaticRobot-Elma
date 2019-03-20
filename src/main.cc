@@ -5,6 +5,7 @@
 
 #include "robot.h"
 #include "intruder.h"
+#include "setting.h"
 
 
 using namespace std::chrono;
@@ -16,14 +17,14 @@ int main() {
 
     MapInfo mpinfo;
     Intruder intruder(mpinfo);
-    Robot states(&mpinfo);
-    RobotInterface ui(states, mpinfo);
+    Robot robot(&mpinfo);
+    RobotInterface ui(robot, mpinfo);
 
     m.schedule(intruder, 5_s)
-     .schedule(states, 1_s)
-     .schedule(ui, 1_s)
-     .init()
-     .run();
-     
+    .schedule(robot, 1_s)
+    .schedule(ui, 1_s)
+    .init()
+    .run();
+    
     endwin();
 }  

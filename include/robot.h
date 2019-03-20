@@ -33,6 +33,17 @@ namespace robot{
         //! Costructor with map information
         Robot(MapInfo *mpinfo);
 
+        //! Costructor with robot name, map information, intruder area, proximity area
+        //! \param name The name of robot
+        //! \param mpinfo MapInfo class
+        //! \param battery Battery class
+        //! \param intruder intruder detection area
+        //! \param proximity proximity detection area
+        Robot(string name, MapInfo *mpinfo, Battery *battery, int intruder, int proximity);
+
+        //! Setting all the transitions.
+        void setTransitions();
+
         //! Checking whether battery can support robot go to charge station.
         //! Reserved 2 steps for robot avoiding it need to detour when it bumpping into an intruder on it's route back to charge station)
         //! \return True: battery can't support it. False: battery can support it keep running.
@@ -46,8 +57,8 @@ namespace robot{
         //! \return True: if it's in 2x2 area from robot's location. False: not in 2x2 area
         bool proximityDetection();
         
-        //!
-        //! \param steps
+        //! Wandering aronud the 2D map. Set the new robot x and y value with random direction.
+        //! \param steps how many steps for wandering (default: 1 step, evade: 2 steps)
         void wandering(int steps);
 
         //! Putting information into a string vector which is going to use on robot interface
@@ -80,6 +91,8 @@ namespace robot{
         Battery _battery;
         MapInfo *_map;
         Status _status = robot::stop;
+
+        int _intruderArea = 4, _proximityArea = 2;
     };
 }
 #endif

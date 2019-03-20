@@ -34,7 +34,7 @@ namespace robot {
         Robot& robot();  
 
         private:
-        bool x_first = true;      
+        bool _x_first = true;      
     };
 
 }

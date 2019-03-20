@@ -3,7 +3,7 @@
 
 using namespace robot;
 
-RobotInterface::RobotInterface(Robot& robot, MapInfo& mp) : Process("user input"), _robot(robot), _mapinfo(mp) {
+RobotInterface::RobotInterface(Robot& robot, MapInfo& mp, vector<string> customize) : Process("user input"), _robot(robot), _mapinfo(mp), _customize(customize) {
     initscr();   // Start ncurses
     timeout(1);  // Timeout for waiting for user input
     noecho();    // Do not echo user input to the screen
@@ -36,6 +36,12 @@ void RobotInterface::showIntro(){
     mvprintw(2,10, "R: robot position");
     mvprintw(3,10, "C: charge station");
     mvprintw(4,10, "I: intruder position");
+
+    if(_customize.size() > 0){
+        for(int i = 0; i < _customize.size(); i++){
+            mvprintw(i+8,10, "%s", _customize[i].c_str());
+        }
+    }
 }
 
 void RobotInterface::showUI(){

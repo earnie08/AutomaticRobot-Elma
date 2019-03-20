@@ -4,8 +4,15 @@
 using namespace elma;
 using namespace robot;
 
-Robot::Robot(MapInfo *mpinfo): StateMachine("Robot") {
-    _map = mpinfo;
+Robot::Robot(MapInfo *mpinfo): StateMachine("Robot"), _map(mpinfo) {
+    setTransitions();
+}
+
+Robot::Robot(string name, MapInfo *mpinfo, Battery *battery, int intruder, int proximity) : StateMachine(name), _map(mpinfo), _battery(*battery), _intruderArea(intruder), _proximityArea(proximity) {
+    setTransitions();
+}
+
+void Robot::setTransitions(){
     set_initial(off);
     add_transition("start/stop", off, wander);
     add_transition("start/stop", wander, off);
@@ -23,7 +30,6 @@ Robot::Robot(MapInfo *mpinfo): StateMachine("Robot") {
 
     add_transition("battery full", charging, wander);
 }
-
 bool Robot::batteryDetection(){
     int steps = abs(_map->getChargeStation().first - _map->getRobotPosition().first) + abs(_map->getChargeStation().second - _map->getRobotPosition().second);
     
@@ -39,7 +45,7 @@ bool Robot::intruderDetection(){
     int I_x = _map->getIntruderPosition().first;
     int I_y = _map->getIntruderPosition().second;
 
-    if(abs(R_x - I_x) <= 4 && abs(R_y - I_y) <=4)
+    if(abs(R_x - I_x) <= _intruderArea && abs(R_y - I_y) <= _intruderArea)
         return true;
     else
         return false;
@@ -51,7 +57,7 @@ bool Robot::proximityDetection(){
     int I_x = _map->getIntruderPosition().first;
     int I_y = _map->getIntruderPosition().second;
 
-    if(abs(R_x - I_x) <= 2 && abs(R_y - I_y) <=2)
+    if(abs(R_x - I_x) <= _proximityArea && abs(R_y - I_y) <= _proximityArea)
         return true;
     else
         return false;
@@ -131,6 +137,7 @@ vector<string> Robot::getStatus(){
     }
     return v;
 }
+
 void Robot::printStatus(){
     _map->printMap();
     cout << "Current Position: " << _map->getRobotPosition().first << "," << _map->getRobotPosition().second << "\n";

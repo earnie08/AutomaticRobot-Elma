@@ -18,11 +18,11 @@ namespace {
 
         MapInfo mpinfo;
         Intruder intruder(mpinfo);
-        Robot states(&mpinfo);
-        RobotInterface ui(states, mpinfo);
+        Robot robot(&mpinfo);
+        RobotInterface ui(robot, mpinfo);
 
         m.schedule(intruder, 5_s)
-        .schedule(states, 1_s)
+        .schedule(robot, 1_s)
         .schedule(ui, 1_s)
         .init()
         .run();
@@ -38,44 +38,16 @@ namespace {
         j_file.close();
     }
 
-    // TEST(Robot, SettingFromJson) {
-    //     std::ifstream j_file("test/robot_setting.json");
-    //     json j;
-    //     j_file >> j;
-
-
-    //     for (json::iterator it = j.begin(); it != j.end(); ++it) {
-    //         std::cout << it.key() << " : " << it.value() << "\n";
-    //     }
-
-    //     string robot_name = j["Robot Name"];
-    //     std::cout << robot_name <<"\n";
+    TEST(Robot, SettingFromJson) {
+        std::ifstream j_file("robot_setting.json");
+        json j;
+        j_file >> j;
+        string robot_name = j["Robot Name"];
+        std::cout << robot_name << "\n";
+        Setting setting(j);
+        j_file.close();
         
-    //     string mode = j["Mode"];
-    //     std::cout << mode <<"\n";
-        
-    //     int map_size = j["MapSize"];
-    //     std::cout << map_size << "\n";
-        
-    //     int battery_size = j["BatterySize"];
-    //     int battery_consume_rate = j["BatteryConsumeRate"];
-    //     vector<int> charge_station = j["ChargeStation"];
-    //     vector<int> robot_position = j["RobotPosition"];
-    //     std::cout << robot_position[0];
-        
-    //     j_file.close();
-        
-        
-    //     Manager m;
-    //     MapInfo mpinfo(map_size, charge_station);
-    //     Intruder intruder(&mpinfo);
-    //     Robot states("default robot");
-    //     Robot_Core core = Robot_Core(robot_name, &mpinfo, robot_position, battery_size, battery_consume_rate);
-
-    //     m.schedule(intruder, 5_s)
-    //         .schedule(states, 1_s)
-    //         .schedule(core, 1_s)
-    //         .init();
-    //         m.run(60_s);
-    // }
+        setting.runRobot(); 
+        endwin();
+    }
 }

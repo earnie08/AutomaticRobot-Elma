@@ -8,6 +8,7 @@ Robot&Evade:: robot() { return (Robot&) state_machine(); }
 
 void Evade::entry(const Event& e) {
     robot().setStatus(evading);
+    robot().getBattery()->setConsume(robot().getBattery()->getConsumeRate()*2);
 }
 
 void Evade::during(){

@@ -22,14 +22,14 @@ namespace robot{
         //! \return Ture: charging ; False: battery is full
         bool charge();
 
-        inline void setConsume(double value) { consume_value = value; }
-        inline double getBattery() { return full_battery; }
-        inline double getConsumeRate(){ return original_consume; }
-        inline double getStatus() { return battery_status; }
-        inline double getConsume() { return consume_value; }
+        inline void setConsume(double value) { _consumeValue = value; }
+        inline double getBattery() { return _fullBattery; }
+        inline double getConsumeRate(){ return _originalConsume; }
+        inline double getStatus() { return _batteryStatus; }
+        inline double getConsume() { return _consumeValue; }
 
         private:
-            double full_battery, battery_status, consume_value, original_consume;
+            double _fullBattery, _batteryStatus, _consumeValue, _originalConsume;
     };
 }
 

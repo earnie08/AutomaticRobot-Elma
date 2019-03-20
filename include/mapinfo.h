@@ -13,17 +13,20 @@ class MapInfo {
     //! Contruct with map size
     //! \param size The map size
     //! \parram chargeStation The position of charge station
-    MapInfo(int size, vector<int> chargeStation);
+    //! \parram robotPosition The position of robot
+    MapInfo(int size, vector<int> chargeStation, vector<int> robotPosition);
 
     //! Set the charge station at the center of map as 'C'
+    //! \param x The x-axis position of charge station in map
+    //! \param x The y-axis position of charge station in map
     void setChargeStation(int x, int y);
 
-    //! Set the robot location in map
+    //! Set the robot location in map as 'x'
     //! \param x The x-axis position of robot in map
     //! \param y The y-axis position of robot in map
     bool setRobotLocation(int x, int y);
 
-    //! Set the intruder location in map
+    //! Set the intruder location in map as 'I'
     //! \param x The x-axis position of robot in map
     //! \param y The y-axis position of robot in map
     bool setIntruderLocation(int x, int y);
@@ -31,6 +34,7 @@ class MapInfo {
     //! Add symbol in map.
     //! \param x The x-axis position of the symbol in map
     //! \param y The y-axis position of the symbol in map 
+    //! \param symbol The symbol to draw on map
     bool setPosition(int x, int y, char symbol);
 
     //! Clean previous route
@@ -49,26 +53,31 @@ class MapInfo {
     void printMap();
 
     //! Return current position in map.
-    inline pair<int, int> getRobotPosition() { return pos_robot; }
+    //! \return robot position [x,y]
+    inline pair<int, int> getRobotPosition() { return _pos_robot; }
 
     //! Return current position in map.
-    inline pair<int, int> getIntruderPosition() { return pos_intruder; }
+    //! \return intruder position [x,y]
+    inline pair<int, int> getIntruderPosition() { return _pos_intruder; }
 
     //! Return charge station position in map.
-    inline pair<int, int> getChargeStation() { return pos_chargeSation; }
+    //! \return charge station position [x,y]
+    inline pair<int, int> getChargeStation() { return _pos_chargeSation; }
 
-    //! Return map 
-    inline vector<vector<char>> getMap() { return mp; }
+    //! Return map
+    //! \return 2D map
+    inline vector<vector<char>> getMap() { return _map; }
     
     //! Return map size
-    inline int getMapSize() { return map_size; }
+    //! \return The map size
+    inline int getMapSize() { return _mapSize; }
     
     private:
-    int map_size;
-    pair<int, int> pos_chargeSation;
-    pair<int, int> pos_robot;
-    pair<int, int> pos_intruder = make_pair(-99,-99);
-    vector<vector<char>> mp;
+    int _mapSize;
+    pair<int, int> _pos_chargeSation;
+    pair<int, int> _pos_robot;
+    pair<int, int> _pos_intruder = make_pair(-99,-99);
+    vector<vector<char>> _map;
 };
 
 #endif
