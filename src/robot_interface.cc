@@ -17,9 +17,6 @@ void RobotInterface::update() {
         case 's':
             emit(Event("start/stop"));
             break;
-        case 'p':
-            emit(Event("pause"));
-            break;
         case 'q':
             std::cout << "halting\n";
             halt();

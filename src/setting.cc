@@ -48,7 +48,7 @@ bool Setting::checkCustomizeSetting(){
     }
     //consume rate is too high, robot can't go back to recharge in time
     // rate*2 --> consume rate will be 2x times when evading 
-    else if(rate > amount || amount/(rate*2) <= abs(station[0]-robot[0]) + abs(station[1]/robot[1])){
+    else if(amount == 0 || rate == 0 || rate > amount || amount/(rate*2) <= abs(station[0]-robot[0]) + abs(station[1]/robot[1])){
         cout << "robot can't go back to recharge in time\n";
         return false;
     }
