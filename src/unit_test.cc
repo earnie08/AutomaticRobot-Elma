@@ -3,6 +3,7 @@
 #include "robot.h"
 #include "intruder.h"
 #include "mapinfo.h"
+#include "setting.h"
 
 namespace {
  
@@ -25,13 +26,13 @@ namespace {
         .schedule(robot, 1_s)
         .schedule(ui, 1_s)
         .init()
-        .run();
+        .run(10_s);
         
         endwin();
     }
 
     TEST(Robot, JsonFile){
-        std::ifstream j_file("test/robot_setting.json");
+        std::ifstream j_file("robot_setting.json");
         json j;
         j_file >> j;
         std::cout << j.dump(4) << std::endl;
