@@ -1,4 +1,4 @@
-Lifetime Security Guard Robot - Elma 
+Lifetime Security Guard Robot 
 ===
 
 
@@ -10,6 +10,7 @@ There might have an intruder showing on the map in a random location(default set
 
 The robot will continue wandering around, detecting the intruder and recharging itself and it won't be shut down before you press 'q' to quit.
 
+The core process and state machine system is based on __elma__, an event loop manager.
 
 Installation
 ---
