@@ -1,0 +1,216 @@
+\subsection*{Project Goal \+: }
+
+A lifetime security guard robot wandering around on a 2\+D array map and helping you detect the intruder until you shut it down. The user can start or stop the robot by using keyboards. Also, the user can adjust most of the robot set in \href{robot_setting.json}{\tt jason file}.
+
+There might have an intruder showing on the map in a random location(default setting is changing location for every 5 seconds). Besides that, the robot will stop and make noise after it found an intruder in its detecting area. If the intruder is too close to the robot, the robot will use 2x speed escaping on the map.
+
+The robot will continue wandering around, detecting the intruder and recharging itself and it won't be shut down before you press 'q' to quit.
+
+\subsection*{Installation }
+
+
+\begin{DoxyCode}
+1 git clone https://github.com/earnie08/Security-Robot.git
+2 cd security-robot
+3 docker run -v $PWD:/source -it klavins/elma:latest bash
+4 make
+\end{DoxyCode}
+
+
+\subsection*{Execution }
+
+To run the default robot, type 
+\begin{DoxyCode}
+1 bin/robot
+\end{DoxyCode}
+ The robot is controlled via the keyboard, via these keys\+:
+
+
+\begin{DoxyItemize}
+\item s\+: Start or Stop
+\item q\+: Quit
+\end{DoxyItemize}
+
+Can switch to customize robot setting. To paste the test case called \char`\"{}\+Setting\+From\+Json\char`\"{} from unit\+\_\+test.\+cc to main.\+cc and \char`\"{}make\char`\"{} again.
+
+\subsection*{Testing }
+
+To run tests, do 
+\begin{DoxyCode}
+1 bin/test
+\end{DoxyCode}
+
+
+There are three parts of the test case\+:
+
+
+\begin{DoxyEnumerate}
+\item Default Robot Setting\+: use the default setting to run the robot
+\item Json file testing\+: test json file information
+\item Customize Robot Setting\+: use customize setting to run the robot
+\end{DoxyEnumerate}
+
+\subsection*{Architecture }
+
+
+\begin{DoxyItemize}
+\item \href{#mpinfo}{\tt Map Information} (\href{mapInfo.h}{\tt Map\+Info.\+h})
+\item \href{#battery}{\tt Battery Information} (\href{battery.h}{\tt Battery.\+h})
+\item \href{#intruder}{\tt Intruder} (\href{intruder.h}{\tt Intruder.\+h})
+\item \href{#robot}{\tt Robot} (\href{robot.h}{\tt Robot.\+h})
+\item \href{#ui}{\tt Robot Interface} (\href{robot_interface.h}{\tt Robot\+\_\+\+Interface.\+h})
+\item \href{#setting}{\tt Customize Setting} (\href{setting.h}{\tt Setting.\+h}) 
+
+ \subsubsection*{\+\_\+\+\_\+\+Map Information\+\_\+\+\_\+}
+\end{DoxyItemize}
+
+Create and set all the position on the 2\+D array map including robot position 'x', charge station 'C' and intruder position 'I'.
+
+Default map setting\+: $>$ map size \+: {\bfseries 11$\ast$11}
+
+$>$ initial robot location \+: \+\_\+\+\_\+\mbox{[}0,0\mbox{]}\+\_\+\+\_\+
+
+$>$ charge station location \+: \+\_\+\+\_\+\mbox{[}5,5\mbox{]}\+\_\+\+\_\+
+
+Symbol on the map\+: $>$ Robot \+: {\bfseries x}
+
+$>$ Charge Station \+: {\bfseries C}
+
+$>$ Intruder \+: {\bfseries I}
+
+The map size, initial robot position and charge station position can be set in the customize json file.
+
+\subsubsection*{\+\_\+\+\_\+\+Battery\+\_\+\+\_\+}
+
+Set the battery capacity and set the battery consumption rate. Battery charging speed is depends on the default consumption rate.
+
+Default Battery setting\+: $>$ Capacity \+: {\bfseries 100}
+
+$>$ Consume Rate \+: {\bfseries 5}
+
+The capacity, consume rate can be set in the customize json file.
+
+\subsubsection*{\+\_\+\+\_\+\+Intruder\+\_\+\+\_\+}
+
+Intruder class is inherited to elma's process class. The intruder will update it's location every 5 seconds(update time can be changed in main.\+cc) and stop when user press stop button('s'). The location is randomly.
+
+\subsubsection*{\+\_\+\+\_\+\+Robot\+\_\+\+\_\+}
+
+Robot class is inherited to elma's state machine class. In the robot state machine, there are serveral states and functions.
+
+States\+:
+
+
+
+
+\begin{DoxyItemize}
+\item Off (\href{off.h}{\tt off.\+h})\+: Press 's' to start the robot.
+\item Wander (\href{wander.cc}{\tt wander.\+cc})\+:
+\begin{DoxyEnumerate}
+\item Detect the intruder's position. If the intruder is in the detection area, set the battery consumption rate to the half of the default rate.
+\item Detect battery status.
+\item The robot will move 1 step each time, the direction is up, left, right and down.
+\end{DoxyEnumerate}
+\item Noise (\href{noise.cc}{\tt noise.\+cc})\+:
+\begin{DoxyEnumerate}
+\item Detect the intruder's position. If the intruder is out of the detection area, reset the consumption rate, turn off the noise and back to wander state.
+\item Detect whether the intruder is in the proximity area. If true, sett the battery consume rate to 2 times of default rate.
+\item Detect battery status.
+\item Robot stop wandering.
+\item Making noise.
+\end{DoxyEnumerate}
+\item Evade (\href{evade.cc}{\tt evade.\+cc})\+:
+\begin{DoxyEnumerate}
+\item Detect the intruder's position. If the intruder is out of the proximity area, reset the consumption rate and back to noise state.
+\item Detect battery status.
+\item robot will move 2 steps each time to escape. The direction is random.
+\end{DoxyEnumerate}
+\item Finding (\href{finding.cc}{\tt finding.\+cc})\+:
+\begin{DoxyEnumerate}
+\item Detect robot is in charge station or not. If it's in the charge station, start charging.
+\item Plan the path to the charge station. The routing logic is that the robot will go x-\/axis first until it has the same x value as the charge station. If the intruder showed up on the route and it's in front of the robot, the robot will detour or try to go y-\/axis first. ~\newline
+Examples\+: \begin{DoxyVerb}| __General__ | __Detour__ | __Y-asix First__ |
+|:-----------:|:----------:|:----------------:|
+|<img src="images/PathToChargeStation.png"/> | <img src="images/DetourToChargeStation.png"/> | <img src="images/Y-AxisFirstDetour.png"/> |
+\end{DoxyVerb}
+
+\end{DoxyEnumerate}
+\item Charging (\href{charging.cc}{\tt charging.\+cc})\+:
+\begin{DoxyEnumerate}
+\item Charging rate is 2 times of the default consume rate.
+\item If the battery is full, set the robot position at the last location.
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+
+Functions\+:
+\begin{DoxyItemize}
+\item {\bfseries battery\+Detection} \+: Detect whether the battery can support robot go back to charge station. Reserved 2 steps for the robot to avoid it needs to detour.
+\item {\bfseries intruder\+Detection} \+: Detect whether intruder's location is in the detection area, the default is a 4x4 area from the robot's location on the map.
+\item {\bfseries proximity\+Detection} \+: Detect whether intruder's location is too close to the robot, the default is detecting 2x2 area around the robot's location on the map.
+\end{DoxyItemize}
+
+\subsubsection*{\+\_\+\+\_\+\+Robot Interface\+\_\+\+\_\+}
+
+To show the robot introduction, robot status, battery status and map information on terminal. The user can start and stop the robot by using 's' button and press 'q' to quit. Stop button can only be detected when the robot is wandering. Quit button can be pressed in anytime.
+
+{\bfseries Default Interface\+:} 
+
+{\bfseries Customize Robot Interface\+:} 
+
+\subsubsection*{\+\_\+\+\_\+\+Customize Setting\+\_\+\+\_\+}
+
+Customize setting for the robot.
+
+There are some restriction for customize setting\+:
+\begin{DoxyItemize}
+\item Robot Name\+: should be {\bfseries string} type.
+\item Map Size\+: should be in range {\bfseries 5} to {\bfseries 20}. (for the best visualization)
+\item Battery Size\+: should {\bfseries greater than consume rate} and {\bfseries 0}
+\item Battery Consume Rate\+: should {\bfseries greater than 0}.
+\item Charge Station\+: x and y shold {\bfseries smaller than map size} and {\bfseries greater or equal to 0}.
+\item Robot Position\+: x and y shold {\bfseries smaller than map size} and {\bfseries greater or equal to 0}.
+\item Robot Detection Area\+: should be {\bfseries smaller or equal to map size}.
+\item Robot Detection Area\+: should be {\bfseries smaller or equal to map size}.
+\end{DoxyItemize}
+
+$\ast$$\ast$\+Battery size divided to two times consume rate should be smaller than the steps that the robot needs to go back to charge station.
+
+Example\+: $\sim$$\sim$$\sim$ \{ \char`\"{}\+Robot Name\char`\"{}\+: \char`\"{}\+Security Robot\char`\"{}, \char`\"{}\+Map Size\char`\"{}\+: 20, \char`\"{}\+Battery Size\char`\"{}\+: 100, \char`\"{}\+Battery Consume Rate\char`\"{}\+: 2, \char`\"{}\+Charge Station\char`\"{}\+: \mbox{[}19,19\mbox{]}, \char`\"{}\+Robot Position\char`\"{}\+: \mbox{[}0,0\mbox{]}, \char`\"{}\+Robot Detection Area\char`\"{}\+: 20, \char`\"{}\+Robot Proximity Area\char`\"{}\+: 20 \} $\sim$$\sim$$\sim$
+
+\subsection*{Results }
+
+{\bfseries Making Noise\+:}
+
+
+
+{\bfseries Evading\+:}
+
+
+
+{\bfseries Battery Low\+:}
+
+
+
+{\bfseries Charging\+:}
+
+
+
+\subsection*{Milestones \& Progress\+: }
+
+
+\begin{DoxyEnumerate}
+\item To implement an automatically wandering robot on a 2\+D array map and also calculate the battery consumption and charging logic into the robot's state machine system. \+\_\+\+\_\+(2/28-\/3/7)\+\_\+\+\_\+
+\item Adding a few features to the robot which can have some action after a randomly dropped intruder on the map. \+\_\+\+\_\+(2/28-\/3/7)\+\_\+\+\_\+
+\item Add customize setting feature. \+\_\+\+\_\+(3/8-\/3/13)\+\_\+\+\_\+
+\item Modify functions to adjust customize setting from J\+S\+O\+N file. \+\_\+\+\_\+(3/8-\/3/13)\+\_\+\+\_\+
+\item Transform the robot on the terminal 2\+D map into the terminal graphic user interface. \+\_\+\+\_\+(3/14-\/3/21)\+\_\+\+\_\+
+\item Completing the A\+P\+I documentation. \+\_\+\+\_\+(3/14-\/3/21)\+\_\+\+\_\+
+\end{DoxyEnumerate}
+
+\subsection*{References }
+
+
+\begin{DoxyItemize}
+\item elma \+: \href{https://github.com/klavinslab/elma_project}{\tt https\+://github.\+com/klavinslab/elma\+\_\+project}
+\item robot state machine\+: \href{https://github.com/klavins/ECEP520/blob/master/week_7/images/robot.png}{\tt https\+://github.\+com/klavins/\+E\+C\+E\+P520/blob/master/week\+\_\+7/images/robot.\+png} 
+\end{DoxyItemize}

@@ -1,0 +1,13 @@
+<map id="include/setting.h" name="include/setting.h">
+<area shape="rect" id="node2" href="$robot_8h.html" title="robot.h" alt="" coords="443,80,511,107"/>
+<area shape="rect" id="node17" href="$intruder_8h_source.html" title="intruder.h" alt="" coords="5,80,88,107"/>
+<area shape="rect" id="node4" href="$off_8h_source.html" title="off.h" alt="" coords="219,155,269,181"/>
+<area shape="rect" id="node5" href="$wander_8h_source.html" title="wander.h" alt="" coords="294,155,373,181"/>
+<area shape="rect" id="node6" href="$noise_8h_source.html" title="noise.h" alt="" coords="397,155,465,181"/>
+<area shape="rect" id="node7" href="$evade_8h_source.html" title="evade.h" alt="" coords="489,155,562,181"/>
+<area shape="rect" id="node8" href="$finding_8h_source.html" title="finding.h" alt="" coords="586,155,662,181"/>
+<area shape="rect" id="node9" href="$charging_8h_source.html" title="charging.h" alt="" coords="686,155,775,181"/>
+<area shape="rect" id="node10" href="$mapinfo_8h_source.html" title="mapinfo.h" alt="" coords="631,229,718,256"/>
+<area shape="rect" id="node13" href="$battery_8h_source.html" title="battery.h" alt="" coords="335,229,414,256"/>
+<area shape="rect" id="node14" href="$robot__interface_8h_source.html" title="robot_interface.h" alt="" coords="851,155,981,181"/>
+</map>
