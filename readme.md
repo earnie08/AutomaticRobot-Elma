@@ -50,12 +50,12 @@ There are three parts of the test case:
 
 Architecture
 ---
-- [Map Information](#mpinfo) ([MapInfo.h](mapInfo.h))
-- [Battery Information](#battery) ([Battery.h](battery.h))
-- [Intruder](#intruder) ([Intruder.h](intruder.h))
-- [Robot](#robot) ([Robot.h](robot.h))
-- [Robot Interface](#ui) ([Robot_Interface.h](robot_interface.h))
-- [Customize Setting](#setting) ([Setting.h](setting.h))
+- [Map Information](#mpinfo) ([MapInfo.h](include/mapInfo.h))
+- [Battery Information](#battery) ([Battery.h](include/battery.h))
+- [Intruder](#intruder) ([Intruder.h](include/intruder.h))
+- [Robot](#robot) ([Robot.h](include/robot.h))
+- [Robot Interface](#ui) ([Robot_Interface.h](include/robot_interface.h))
+- [Customize Setting](#setting) ([Setting.h](include/setting.h))
     - - -
     ### <a id="mpinfo"></a>__Map Information__
     Create and set all the position on the 2D array map including robot position 'x', charge station 'C' and intruder position 'I'.
@@ -96,22 +96,22 @@ Architecture
     
     <img src="images/RobotStateMachine.png" width="100%"/>
     
-    - Off ([off.h](off.h)): Press 's' to start the robot.
-    - Wander ([wander.cc](wander.cc)):
+    - Off ([off.h](include/off.h)): Press 's' to start the robot.
+    - Wander ([wander.cc](src/wander.cc)):
         1. Detect the intruder's position. If the intruder is in the detection area, set the battery consumption rate to the half of the default rate.
         2. Detect battery status.
         3. The robot will move 1 step each time, the direction is up, left, right and down.
-    - Noise ([noise.cc](noise.cc)):
+    - Noise ([noise.cc](src/noise.cc)):
         1. Detect the intruder's position. If the intruder is out of the detection area, reset the consumption rate, turn off the noise and back to wander state.
         2. Detect whether the intruder is in the proximity area. If true, sett the battery consume rate to 2 times of default rate.
         3. Detect battery status. 
         4. Robot stop wandering.
         5. Making noise. 
-    - Evade ([evade.cc](evade.cc)):
+    - Evade ([evade.cc](src/evade.cc)):
         1. Detect the intruder's position. If the intruder is out of the proximity area, reset the consumption rate and back to noise state.
         2. Detect battery status.
         3. robot will move 2 steps each time to escape. The direction is random.
-    - Finding ([finding.cc](finding.cc)):
+    - Finding ([finding.cc](src/finding.cc)):
         1. Detect robot is in charge station or not. If it's in the charge station, start charging.
         2. Plan the path to the charge station. The routing logic is that the robot will go x-axis first until it has the same x value as the charge station. If the intruder showed up on the route and it's in front of the robot, the robot will detour or try to go y-axis first.
         <br>Examples:
@@ -120,7 +120,7 @@ Architecture
             |:-----------:|:----------:|:----------------:|
             |<img src="images/PathToChargeStation.png"/> | <img src="images/DetourToChargeStation.png"/> | <img src="images/Y-AxisFirstDetour.png"/> |
 
-    - Charging ([charging.cc](charging.cc)):
+    - Charging ([charging.cc](src/charging.cc)):
         1. Charging rate is 2 times of the default consume rate.
         2. If the battery is full, set the robot position at the last location.
 
