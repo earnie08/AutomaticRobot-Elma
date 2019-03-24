@@ -94,7 +94,7 @@ Architecture
     
     States:
     
-    <img src="images/RobotStateMachine.png" width="100%"/>
+    <img src="https://github.com/earnie08/Security-Robot/blob/master/images/RobotStateMachine.png" width="100%"/>
     
     - Off ([off.h](include/off.h)): Press 's' to start the robot.
     - Wander ([wander.cc](src/wander.cc)):
@@ -138,10 +138,10 @@ Architecture
     Quit button can be pressed in anytime.
     
     __Default Interface:__
-    <img src="images/RobotInterface.png"/> 
+    <img src="https://github.com/earnie08/Security-Robot/blob/master/images/RobotInterface.png"/> 
 
     __Customize Robot Interface:__
-    <img src="images/CustomizeRobotInterface.png"/> 
+    <img src="https://github.com/earnie08/Security-Robot/blob/master/images/CustomizeRobotInterface.png"/> 
 
     ### <a id="setting"></a>__Customize Setting__
     Customize setting for the robot.
@@ -176,19 +176,19 @@ Results
 ---
 __Making Noise:__
 
-<img src="images/Noise.png" width="80%"/> 
+<img src="https://github.com/earnie08/Security-Robot/blob/master/images/Noise.png" width="80%"/> 
 
 __Evading:__
 
-<img src="images/Evading.png" width="80%"/> 
+<img src="https://github.com/earnie08/Security-Robot/blob/master/images/Evading.png" width="80%"/> 
 
 __Battery Low:__
 
-<img src="images/BatteryLow.png" width="80%"/> 
+<img src="https://github.com/earnie08/Security-Robot/blob/master/images/BatteryLow.png" width="80%"/> 
 
 __Charging:__
 
-<img src="images/Charging.png" width="80%"/> 
+<img src="https://github.com/earnie08/Security-Robot/blob/master/images/Charging.png" width="80%"/> 
 
 
 Milestones & Progress:
